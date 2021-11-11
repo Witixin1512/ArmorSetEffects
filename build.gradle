@@ -1,0 +1,87 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = '1.16.5-1.0.8'
+group = 'net.witixin.seteffect'
+archivesBaseName = 'seteffect'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+minecraft {
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    mappings channel: 'official', version: '1.16.5'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                seteffect {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                seteffect {
+                    source sourceSets.main
+                }
+            }
+        }
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'seteffect', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                seteffect {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+repositories {
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
+    implementation fg.deobf("curse.maven:crafttweaker-239197:3505715")
+    implementation fg.deobf("curse.maven:game-stages-268655:3437962")
+    implementation fg.deobf("curse.maven:packmode-278398:3104411")
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": "SetEffect",
+            "Specification-Vendor": "Witixin",
+            "Specification-Version": "1.0.0",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"Witixin",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+jar.finalizedBy('reobfJar')
+
