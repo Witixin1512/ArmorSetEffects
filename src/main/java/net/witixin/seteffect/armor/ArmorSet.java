@@ -34,6 +34,7 @@ public class ArmorSet
 	private final List<IArmorEffect> effects;
 	private final List<IArmorEffect> attackerEffects;
 
+	private boolean flyEffect;
 	private final List<String> requiredStages;
 	private String name = "";
 	private String packmode;
@@ -49,6 +50,7 @@ public class ArmorSet
 		this.requiredStages = new ArrayList<>();
 		this.strict = false;
 		this.ignoreNBT = false;
+		this.flyEffect = false;
 	}
 
 	@ZenCodeType.Method
@@ -130,11 +132,19 @@ public class ArmorSet
 	}
 
 	@ZenCodeType.Method
+	public ArmorSet applyFlight(boolean flyEffect){
+		this.flyEffect = flyEffect;
+		return this;
+	}
+
+	@ZenCodeType.Method
 	public ArmorSet addAttackerEffect(IArmorEffect effect)
 	{
 		attackerEffects.add(effect);
 		return this;
 	}
+
+
 
 	@ZenCodeType.Method
 	public ArmorSet inSlot(EquipmentSlotType slot, IItemStack stack){
@@ -161,6 +171,11 @@ public class ArmorSet
         this.ignoreNBT = true;
         return this;
     }
+
+	@ZenCodeType.Method
+	public boolean getFlight(){
+		return this.flyEffect;
+	}
 
 	public boolean isPlayerWearing(LivingEntity player)
 	{
@@ -292,6 +307,7 @@ public class ArmorSet
 	{
 		return armor;
 	}
+
 
 	public String getName()
 	{

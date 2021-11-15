@@ -26,6 +26,8 @@ Package: `import mods.seteffect.ArmorSetEffect`
 
 `MyArmorSetEffect.addParticle(particleName as string, minx as float, miny as float, minz as float, maxx as float, maxy as float,  maxz as float,  minxoffset as float,  minyoffset as float,minzoffset as float, float maxxoffset,  maxyoffset as float,  maxzoffset as float,  minspeed as float,  maxspeed as float,  amount as int) as ArmorSetEffect` -> Adds a particle that appears when the player is wearing the full set.
 
+`MyArmorSetEffect.applyFlight(flight as boolean) as ArmorSetEffect` -> Gives the player the ability to fly when wearing the armor
+
 `MyArmorSetEffect.addParticleWithDefaultSpread(particleName as string) as ArmorSetEffect` -> Adds a non customisable particle spread with the specified particle.
 
 `MyArmorSetEffect.addImmunity(effect as MCPotionEffect) as ArmorSetEffect` -> Makes the player wearing the set immune to that [effect](https://docs.blamejared.com/1.16/en/vanilla/api/potions/MCPotionEffect).

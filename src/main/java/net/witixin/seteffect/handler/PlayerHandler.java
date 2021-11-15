@@ -4,7 +4,9 @@ import com.teamacronymcoders.packmode.PackModeAPIImpl;
 import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -52,6 +54,22 @@ public class PlayerHandler
 						set.applyAttackerEffect((LivingEntity) event.getSource().getDirectEntity());
 				}
 			}
+	}
+	@SubscribeEvent
+	public static void onPlayerArmor(LivingEquipmentChangeEvent event){
+		if (event.getEntityLiving().level.isClientSide)return;
+		for (ArmorSet set : ArmorSets.sets){
+			if (event.getEntityLiving() instanceof PlayerEntity && set.getFlight()){
+				PlayerEntity playerEntity = (PlayerEntity) event.getEntityLiving();
+				if (!playerEntity.isCreative() && !playerEntity.isSpectator()){
+						updateThings(playerEntity, set.isPlayerWearing(playerEntity));
+				}
+			}
+		}
+	}
+	private static void updateThings(PlayerEntity pl, boolean thing){
+		pl.abilities.mayfly = thing;
+		pl.onUpdateAbilities();
 	}
 
 	public static boolean hasGamestage(PlayerEntity player, List<String> gameStages)
