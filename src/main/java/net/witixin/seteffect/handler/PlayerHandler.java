@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class PlayerHandler
 {
-	static int ticks = 0;
 
 
 	@SubscribeEvent
@@ -28,10 +27,8 @@ public class PlayerHandler
 	{
 		if(event.getEntityLiving().level.isClientSide || event.getEntityLiving() == null || !event.getEntityLiving().isAlive())
 			return;
-		ticks++;
-		if(ticks % 100 == 0)
+		if(event.getEntityLiving().level.dayTime() % 100 == 0)
 		{
-			ticks = 0;
 
 			for(ArmorSet set : ArmorSets.sets)
 			{
