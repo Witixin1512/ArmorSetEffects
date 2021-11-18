@@ -5,6 +5,7 @@ import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -63,6 +64,10 @@ public class PlayerHandler
 				}
 			}
 		}
+	}
+	@SubscribeEvent
+	public static void reload(AddReloadListenerEvent event){
+		ArmorSets.sets.clear();
 	}
 	private static void updateThings(PlayerEntity pl, boolean thing){
 		pl.abilities.mayfly = thing;

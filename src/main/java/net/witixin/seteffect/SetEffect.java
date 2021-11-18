@@ -1,6 +1,7 @@
 package net.witixin.seteffect;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -20,4 +21,5 @@ public class SetEffect
 	private void setup(final FMLCommonSetupEvent event){
 		MinecraftForge.EVENT_BUS.register(PlayerHandler.class);
 	}
+
 }
