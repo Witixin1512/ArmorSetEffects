@@ -28,7 +28,7 @@ public class PlayerHandler
 	{
 		if(event.getEntityLiving().level.isClientSide || event.getEntityLiving() == null || !event.getEntityLiving().isAlive())
 			return;
-		if(event.getEntityLiving().level.dayTime() % 100 == 0)
+		if(event.getEntityLiving().level.getGameTime() % 100 == 0)
 		{
 
 			for(ArmorSet set : ArmorSets.sets)
