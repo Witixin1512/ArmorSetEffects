@@ -9,7 +9,7 @@ import org.openzen.zencode.java.ZenCodeType;
 public class ExpandEffectPotionInstance {
     @ZenCodeType.Method
     public static EffectInstance hideParticles(EffectInstance instance){
-        instance.visible = true;
+        instance.visible = false;
         return instance;
     }
 }
