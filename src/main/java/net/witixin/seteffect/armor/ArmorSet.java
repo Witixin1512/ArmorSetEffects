@@ -17,7 +17,7 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.witixin.seteffect.handler.PlayerHandler;
+import net.witixin.seteffect.SetEffect;
 import org.openzen.zencode.java.ZenCodeType;
 
 import java.util.ArrayList;
@@ -30,9 +30,13 @@ import java.util.List;
 @ZenCodeType.Name("mods.seteffect.ArmorSetEffect")
 public class ArmorSet
 {
+
+
 	private final Multimap<EquipmentSlotType, ItemStack> armor;
 	private final List<IArmorEffect> effects;
 	private final List<IArmorEffect> attackerEffects;
+	private final List<IArmorEffect> attackEffects;
+	private final List<IArmorEffect> attackedEffects;
 
 	private boolean flyEffect;
 	private final List<String> requiredStages;
@@ -48,6 +52,8 @@ public class ArmorSet
 		this.effects = new ArrayList<>();
 		this.attackerEffects = new ArrayList<>();
 		this.requiredStages = new ArrayList<>();
+		this.attackEffects = new ArrayList<>();
+		this.attackedEffects = new ArrayList<>();
 		this.strict = false;
 		this.ignoreNBT = false;
 		this.flyEffect = false;
@@ -65,6 +71,7 @@ public class ArmorSet
 	@ZenCodeType.Method
 	public void register()
 	{
+		if (name.length() <= 1)throw new IllegalArgumentException("ArmorSetEffects require a name");
 		ArmorSets.addSet(this);
 		CraftTweakerAPI.logInfo("Registering an ArmorSet with name: " + this.getName());
 	}
@@ -95,9 +102,9 @@ public class ArmorSet
 	@ZenCodeType.Method
     public ArmorSet addImmunity(Effect effect)
     {
-        return addEffect(new ArmorEffectImmune(effect));
+		effects.add(new ArmorEffectImmune(effect));
+		return this;
     }
-
     @ZenCodeType.Method
 	public static void dumpParticleNames(){
 		CraftTweakerAPI.logInfo("Dumping registered particle names:");
@@ -105,12 +112,6 @@ public class ArmorSet
 			CraftTweakerAPI.logInfo(t.getRegistryName().toString());
 		}
 		CraftTweakerAPI.logInfo("Finished dumping registered particle names");
-	}
-
-	public ArmorSet addEffect(IArmorEffect effect)
-	{
-		effects.add(effect);
-		return this;
 	}
 
 	@ZenCodeType.Method
@@ -121,7 +122,13 @@ public class ArmorSet
 	}
 	@ZenCodeType.Method
 	public ArmorSet addAttributeEffect(Attribute atr, AttributeModifier mod){
-		effects.add(new ArmorEffectAttributes(atr, mod));
+		//attrEffects.add(new ArmorEffectAttributes(atr, mod));
+		CraftTweakerAPI.logInfo("addAttributeEffect is currently under maintenance and doesn't do anything!");
+		return this;
+	}
+	@ZenCodeType.Method
+	public ArmorSet addAttackEffect(EffectInstance effect){
+		attackEffects.add(new ArmorEffectPotion(effect));
 		return this;
 	}
 	@ZenCodeType.Method
@@ -138,13 +145,10 @@ public class ArmorSet
 	}
 
 	@ZenCodeType.Method
-	public ArmorSet addAttackerEffect(IArmorEffect effect)
-	{
-		attackerEffects.add(effect);
+	public ArmorSet addAttackedEffect(EffectInstance effect){
+		attackedEffects.add(new ArmorEffectPotion(effect));
 		return this;
 	}
-
-
 
 	@ZenCodeType.Method
 	public ArmorSet inSlot(EquipmentSlotType slot, IItemStack stack){
@@ -160,7 +164,7 @@ public class ArmorSet
 	}
 	
 	@ZenCodeType.Method
-	public ArmorSet setPackmode(String pacmode){
+	public ArmorSet setPackmode(String packmode){
 		this.packmode = packmode;
 		return this;
 	}
@@ -177,6 +181,12 @@ public class ArmorSet
 		return this.flyEffect;
 	}
 
+	@ZenCodeType.Method
+	public static void setCycleTicks(int ticks){
+		if (ticks < 1)throw new IllegalArgumentException("Ticks can't be negative or 0!");
+		SetEffect.cycleTicks = ticks;
+	}
+
 	public boolean isPlayerWearing(LivingEntity player)
 	{
 		return isPlayerWearing(player, strict);
@@ -184,7 +194,7 @@ public class ArmorSet
 
 	private boolean isPlayerWearing(LivingEntity player, boolean strict)
 	{
-		if(player instanceof PlayerEntity && !PlayerHandler.hasGamestage((PlayerEntity) player, requiredStages) && !PlayerHandler.correctPackmode(getPackmode()))
+		if(player instanceof PlayerEntity && !SetEffect.hasGamestage((PlayerEntity) player, requiredStages) && !SetEffect.correctPackmode(getPackmode()))
 			return false;
 
 		for(EquipmentSlotType slot : armor.keySet())
@@ -303,11 +313,27 @@ public class ArmorSet
 		attackerEffects.forEach(e -> e.apply(livingBase));
 	}
 
+	public void applyAttrEffects(LivingEntity living){
+		/* attrEffects.forEach(effect -> {
+			effect.apply(living);}); */
+	}
+	public void removeAttrEffects(LivingEntity entity){
+		/* attrEffects.forEach(effect -> {
+			((ArmorEffectAttributes) effect).remove(entity);
+		}); */
+	}
+	public void applyAttackEffect(LivingEntity livingBase){
+		attackEffects.forEach(e -> e.apply(livingBase));
+	}
+
+	public void applyAttackedEffects(LivingEntity living){
+		attackedEffects.forEach(e -> e.apply(living));
+	}
+
 	public Multimap<EquipmentSlotType, ItemStack> getArmor()
 	{
 		return armor;
 	}
-
 
 	public String getName()
 	{

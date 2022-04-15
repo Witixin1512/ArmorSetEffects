@@ -5,7 +5,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.world.server.ServerWorld;
-import net.witixin.seteffect.handler.GeneralHelper;
+import net.witixin.seteffect.helpers.GeneralHelper;
 
 import java.util.Random;
 
@@ -39,21 +39,19 @@ public class ArmorEffectParticle implements IArmorEffect
 	}
 
 	@Override
-	public void apply(LivingEntity player)
-	{
-
+	public void apply(LivingEntity player){
 		ServerWorld level = (ServerWorld) player.level;
 		Random random = level.getRandom();
 			for(int i = 0; i < amount; i++)
 			{
-				float posX = GeneralHelper.randomRange(random, minx, maxx);
-				float posY = GeneralHelper.randomRange(random, miny, maxy);
-				float posZ = GeneralHelper.randomRange(random, minz, maxz);
-				float offsetX = GeneralHelper.randomRange(random, minxoffset, maxxoffset);
-				float offsetY = GeneralHelper.randomRange(random, minyoffset, maxyoffset);
-				float offsetZ = GeneralHelper.randomRange(random, minzoffset, maxzoffset);
+				float posX = randomRange(random, minx, maxx);
+				float posY = randomRange(random, miny, maxy);
+				float posZ = randomRange(random, minz, maxz);
+				float offsetX = randomRange(random, minxoffset, maxxoffset);
+				float offsetY = randomRange(random, minyoffset, maxyoffset);
+				float offsetZ = randomRange(random, minzoffset, maxzoffset);
 
-				float speed = GeneralHelper.randomRange(random, minspeed, maxspeed);
+				float speed = randomRange(random, minspeed, maxspeed);
 
 				for (ServerPlayerEntity playerEntity :  player.getServer().getPlayerList().getPlayers()){
 					level.sendParticles(playerEntity, (IParticleData) type, false, player.getX() + posX, player.getY() + posY, player.getZ() + posZ, 1, offsetX, offsetY, offsetZ, speed);
@@ -62,5 +60,10 @@ public class ArmorEffectParticle implements IArmorEffect
 
 		}
 
+	}
+	private static float randomRange(Random random, float min, float max)
+	{
+		float val = min + random.nextFloat() * (max - min);
+		return val;
 	}
 }

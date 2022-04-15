@@ -4,8 +4,7 @@ license="MIT"
 [[mods]]
 modId="seteffect"
 version="${file.jarVersion}"
-displayName="SetEffect"
-logoFile="examplemod.png" #optional
+displayName="ArmorSetEffects"
 credits="Full credit goes to Lemonszz, this is just a port of their original mod for 1.12.2 https://github.com/Lemonszz/SetEffect & https://www.curseforge.com/minecraft/mc-mods/set-effect/files"
 authors="Witixin (Lemonszz)" #optional
 description='''

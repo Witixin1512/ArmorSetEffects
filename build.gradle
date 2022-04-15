@@ -4,14 +4,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-1.0.6'
+version = '1.16.5-1.0.8'
 group = 'net.witixin.seteffect'
 archivesBaseName = 'seteffect'
 
@@ -64,10 +64,11 @@ repositories {
     }
 }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
     implementation fg.deobf("curse.maven:crafttweaker-239197:3505715")
-    implementation fg.deobf("curse.maven:game-stages-268655:3437962")
-    implementation fg.deobf("curse.maven:packmode-278398:3104411")
+    compileOnly fg.deobf("curse.maven:game-stages-268655:3437962")
+    compileOnly fg.deobf("curse.maven:bookshelf-228525:3474499")
+    compileOnly fg.deobf("curse.maven:packmode-278398:3104411")
 }
 
 jar {
