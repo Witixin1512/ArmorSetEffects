@@ -5,7 +5,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.world.server.ServerWorld;
-import net.witixin.seteffect.helpers.GeneralHelper;
 
 import java.util.Random;
 

@@ -37,6 +37,7 @@ public class ArmorSet
 	private final List<IArmorEffect> attackerEffects;
 	private final List<IArmorEffect> attackEffects;
 	private final List<IArmorEffect> attackedEffects;
+	private final List<ArmorEffectAttributes> attrEffects;
 
 	private boolean flyEffect;
 	private final List<String> requiredStages;
@@ -54,6 +55,7 @@ public class ArmorSet
 		this.requiredStages = new ArrayList<>();
 		this.attackEffects = new ArrayList<>();
 		this.attackedEffects = new ArrayList<>();
+		this.attrEffects = new ArrayList<>();
 		this.strict = false;
 		this.ignoreNBT = false;
 		this.flyEffect = false;
@@ -122,8 +124,8 @@ public class ArmorSet
 	}
 	@ZenCodeType.Method
 	public ArmorSet addAttributeEffect(Attribute atr, AttributeModifier mod){
+		CraftTweakerAPI.logError("Attribute support is under maintenance now!");
 		//attrEffects.add(new ArmorEffectAttributes(atr, mod));
-		CraftTweakerAPI.logInfo("addAttributeEffect is currently under maintenance and doesn't do anything!");
 		return this;
 	}
 	@ZenCodeType.Method
@@ -294,13 +296,6 @@ public class ArmorSet
 		}
 	}
 
-	public void print()
-	{
-		for(EquipmentSlotType slot : armor.keySet())
-		{
-			System.out.println(slot + " - " + armor.get(slot));
-		}
-	}
 
 	public void applyEffects(LivingEntity livingBase)
 	{
@@ -314,13 +309,13 @@ public class ArmorSet
 	}
 
 	public void applyAttrEffects(LivingEntity living){
-		/* attrEffects.forEach(effect -> {
-			effect.apply(living);}); */
+		 attrEffects.forEach(effect -> {
+			effect.apply(living);});
 	}
 	public void removeAttrEffects(LivingEntity entity){
-		/* attrEffects.forEach(effect -> {
-			((ArmorEffectAttributes) effect).remove(entity);
-		}); */
+		 attrEffects.forEach(effect -> {
+			 effect.remove(entity);
+		});
 	}
 	public void applyAttackEffect(LivingEntity livingBase){
 		attackEffects.forEach(e -> e.apply(livingBase));

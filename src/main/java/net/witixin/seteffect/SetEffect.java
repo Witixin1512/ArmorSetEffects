@@ -78,14 +78,9 @@ public class SetEffect
 					updateThings(playerEntity, set.isPlayerWearing(playerEntity));
 				}
 			}
-			if (set.isPlayerWearing(event.getEntityLiving())){
-				set.applyAttrEffects(event.getEntityLiving());
-				return;
-			}
-			else {
-				set.removeAttrEffects(event.getEntityLiving());
-			}
 		}
+
+
 	}
 		@SubscribeEvent
 		public static void reload(AddReloadListenerEvent event){
